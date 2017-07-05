@@ -1,0 +1,39 @@
+---
+
+- meta: flush_handlers
+
+- name: Setup virtualenv
+  command: virtualenv --python=pypy /opt/pypy-venv
+
+- name: Unarchive librdkafka
+  unarchive: src="librdkafka.tar.gz" dest="/opt"
+
+- name: Install libradkafka
+  shell: |
+    cd /opt/librdkafka
+    ./configure
+    make
+    sudo make install
+    sudo ldconfig
+
+- name: Install Kafka consumer for InfluxDB
+  shell: |
+    cd /opt/pypy-venv/
+    sudo pip install kafka_influxdb
+
+- name: Configure the consumer runtime
+  template: >
+    src=config.j2
+    dest=/opt/pypy-venv/custom-config.yaml
+    owner=root
+    group=root
+    mode=0644
+
+- name: Create init.d script for Kafka
+  template: >
+    src=kafka-influxdb.j2
+    dest=/etc/init.d/kafka-influxdb
+    owner=root
+    group=root
+    mode=0755
+  notify: start kafka-influxdb

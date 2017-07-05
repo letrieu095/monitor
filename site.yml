@@ -1,0 +1,11 @@
+---
+ - hosts: all
+   remote_user: trieu
+   sudo: yes
+   roles:
+     - { role: influxdb, tags: influxdb }
+     - { role: grafana, tags: grafana }
+     - { role: telegraf, tags: telegraf }
+     - { role: kapacitor, tags: kapacitor }
+     - { role: kafka_cluster, tags: kafka }
+     - { role: kafka_influxdb, tags: kafka_influxdb }

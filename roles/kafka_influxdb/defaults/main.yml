@@ -1,0 +1,18 @@
+---
+
+# Kafka cluster informations
+kafka_host: localhost
+kafka_port: 9099
+kafka_topic: telegraf
+kafka_group: kafkainflux
+
+# InfluxDB informations
+influxdb_host: localhost
+influxdb_port: 8086
+influxdb_user: admin
+influxdb_pass: admin
+influxdb_db: telegraf
+influxdb_retention_policy: autogen
+
+# Output Encoder
+output_to_influxdb_encoder: kafka_influxdb.encoder.collectd_graphite_encoder

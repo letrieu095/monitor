@@ -1,0 +1,4 @@
+---
+
+- name: start kafka
+  service: name=kafka state=started enabled=yes

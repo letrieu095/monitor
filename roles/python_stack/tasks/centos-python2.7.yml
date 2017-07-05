@@ -1,0 +1,27 @@
+---
+
+- name: Enable EPEL
+  yum: name=epel-release state=present
+  
+- name: Install Python librairies
+  yum: name=python-devel state=present update_cache=yes
+    
+- name: Install Pip
+  yum: name={{item}} state=present
+  with_items:
+    - python-setuptools
+    - python-pip
+
+- name: Upgrade Pip
+  pip: name=pip extra_args="--upgrade"
+  
+- name: Install Virtualenv
+  pip: name=virtualenv
+
+- unarchive: src="pypy2-v{{pypy_version}}-linux64.tar.bz2" dest=/opt/pypy2.7
+
+- name: Install PyPy2.7
+  file: >
+    src=/opt/pypy2.7/bin/pypy
+    dest=/usr/local/bin/pypy
+    state=link

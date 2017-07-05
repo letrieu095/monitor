@@ -1,0 +1,25 @@
+---
+
+- name: Install Python2.7 librairies
+  apt: name={{item}} state=present
+  with_items:
+    - build-essential
+    - python
+    - python-dev
+    
+- name: Install Pip
+  apt: name=python-pip state=present
+    
+- name: Upgrade Pip
+  pip: name=pip extra_args="--upgrade"
+
+- name: Install Virtualenv
+  pip: name=virtualenv
+
+- apt_repository: repo="ppa:pypy/ppa"
+
+- name: Install PyPy2.7 librairies
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - pypy
+    - pypy-dev
