@@ -13,4 +13,4 @@ influxdb_http_auth_enabled: true
 
 # User
 influxdb_admin_username: admin
-influxdb_admin_password: admin #4nSibl3
+influxdb_admin_password: 4nSibl3

@@ -2,7 +2,7 @@
 
 # User InfluxDB
 influxdb_admin_username: admin
-influxdb_admin_password: admin
+influxdb_admin_password: 4nSibl3
 
 # HipChat
 hipchat_url: https://trieulv.hipchat.com/v2/room

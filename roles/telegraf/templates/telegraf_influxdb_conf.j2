@@ -71,7 +71,7 @@
 ###############################################################################
 
   # Configuration for influxdb server to send metrics to
-  [[outputs.influxdb]]
+[[outputs.influxdb]]
   ## The full HTTP or UDP endpoint URL for your InfluxDB instance.
   ## Multiple urls can be specified as part of the same cluster,
   ## this means that only ONE of the urls will be written to each interval.
@@ -84,7 +84,7 @@
   precision = "s"
 
   ## Retention policy to write to.
-  retention_policy = "{{influxdb_retention_policy}}"
+  retention_policy = ""
   ## Write consistency (clusters only), can be: "any", "one", "quorom", "all"
   write_consistency = "any"
 

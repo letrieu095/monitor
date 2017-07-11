@@ -1,7 +1,0 @@
----
-
-- include: "ubuntu-python2.7.yml"
-  when: ansible_distribution == "Ubuntu" and python_version == 2.7
-
-- include: "centos-python2.7.yml"
-  when: ansible_distribution == "CentOS" and python_version == 2.7

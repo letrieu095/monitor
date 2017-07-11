@@ -1,0 +1,13 @@
+stream
+    // Select just the cpu measurement from our example database.
+    |from()
+        .measurement('mem')
+        .groupBy('mem')
+    |alert()
+        .id('kapacitor/{{ .Group }}/{{ .Name }}/used_percent')
+        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "used_percent" | printf "%0.2f" }}% in host: {{ index .Tags "host"}}')
+        .warn(lambda: "used_percent" >  80)
+        .crit(lambda: "used_percent" >  90)
+        // Whenever we get an alert write it to a file.
+        .log('/var/log/kapacitor/alerts.log')
+        .hipChat()

@@ -1,4 +1,0 @@
----
-
-- name: start kafka-influxdb
-  service: name=kafka-influxdb state=started enabled=yes

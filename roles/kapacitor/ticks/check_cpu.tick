@@ -1,25 +1,32 @@
 stream
     // Select just the cpu measurement from our example database.
     |from()
-        .measurement('ubuntu1_cpu-total_cpu_usage_idle')
+        .measurement('cpu')
+        .groupBy('cpu')
+
     |alert()
-        .id('kapacitor/{{ .Name }}')
-        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "value" }}')
-        .warn(lambda: "value" <  99)
-        .crit(lambda: "value" <  99)
+        .id('kapacitor/{{ .Group }}/{{ .Name }}/usage_system')
+        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "usage_system" | printf "%0.2f" }}% in host: {{ index .Tags "host"}}')
+        .warn(lambda: "usage_system" >  80)
+        .crit(lambda: "usage_system" >  90)
         // Whenever we get an alert write it to a file.
         .log('/var/log/kapacitor/alerts.log')
         .hipChat()
 
-stream
-    // Select just the cpu measurement from our example database.
-    |from()
-        .measurement('ubuntu2_cpu-total_cpu_usage_idle')
     |alert()
-        .id('kapacitor/{{ .Name }}')
-        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "value" }}')
-        .warn(lambda: "value" <  99)
-        .crit(lambda: "value" <  99)
+        .id('kapacitor/{{ .Group }}/{{ .Name }}/usage_user')
+        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "usage_user" | printf "%0.2f" }}% in host: {{ index .Tags "host"}}')
+        .warn(lambda: "usage_user" >  80)
+        .crit(lambda: "usage_user" >  90)
+        // Whenever we get an alert write it to a file.
+        .log('/var/log/kapacitor/alerts.log')
+        .hipChat()
+
+    |alert()
+        .id('kapacitor/{{ .Group }}/{{ .Name }}/usage_idle')
+        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "usage_idle" | printf "%0.2f" }}% in host: {{ index .Tags "host"}}')
+        .warn(lambda: "usage_idle" <  20)
+        .crit(lambda: "usage_idle" <  10)
         // Whenever we get an alert write it to a file.
         .log('/var/log/kapacitor/alerts.log')
         .hipChat()

@@ -1,17 +1,11 @@
 ---
+- meta: flush_handlers
 
+- name: Install Kapacitor
+  apt: name=kapacitor state=latest update_cache=yes
 
-- name: Copy source kapacitor
-  copy: src="kapacitor_1.3.1_amd64.deb" dest=/opt
-  when: ansible_os_family == 'Debian'
-
-- name: Install kapacitor
-  apt: deb=/opt/kapacitor_1.3.1_amd64.deb
-  when: ansible_os_family == 'Debian'
- # notify: 
-  #  - start kapacitor
-- name: start kapacitor
-  service: name=kapacitor state=started enabled=yes
+#- name: start kapacitor
+ # service: name=kapacitor state=started enabled=yes
 
 - name: Create /var/lib/kapacitor/ticks
   file: path=/var/lib/kapacitor/ticks state=directory mode=0755 recurse=yes
@@ -23,15 +17,18 @@
     owner: root 
     group: root 
     mode: 0644
-  notify: 
-    - restart kapacitor
 
+- name: start kapacitor
+  service: name=kapacitor state=restarted
+  
 - name: Copy ticks file
   copy: >
     src=../ticks/{{ item }}
     dest=/var/lib/kapacitor/ticks/{{ item }} mode=0755
   with_items:
     - check_cpu.tick
+    - check_disk.tick
+    - check_mem.tick
   tags: up_ticks_file
 
 - name: Run ticks file
@@ -42,6 +39,8 @@
       -dbrp telegraf.autogen
   with_items:
     - check_cpu
+    - check_disk
+    - check_mem
   tags: up_ticks_file
 
 - name: Enable ticks file
@@ -49,4 +48,6 @@
     kapacitor enable {{ item }}
   with_items:
     - check_cpu
+    - check_disk
+    - check_mem
   tags: up_ticks_file
